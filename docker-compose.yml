@@ -1,0 +1,38 @@
+services:
+    app:
+        container_name: free-radius-laravel
+        build: .
+        volumes:
+        - .:/var/www
+        ports:
+        - "8002:80"
+
+    mysql:
+        image: mysql:5.7
+        environment:
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_DATABASE=free-radius-laravel
+        - MYSQL_USER=free-radius-laravel
+        - MYSQL_PASSWORD=password
+
+    redis:
+        image: redis:alpine
+
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+        - "8025:8025"
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+        - "8080:80"
+        links:
+        - mysql
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+            PMA_USER: free-radius-laravel
+            PMA_PASSWORD: password
+            UPLOAD_LIMIT: 100M
+
